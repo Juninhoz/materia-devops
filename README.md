@@ -28,7 +28,7 @@ Aplicação web em **Ruby on Rails** com autenticação via **Devise** e um **CR
 | Framework | Rails 8.1 |
 | Autenticação | Devise 5 |
 | Traduções | rails-i18n, devise-i18n |
-| Banco de dados | SQLite 3 |
+| Banco de dados | PostgreSQL |
 | Front-end | Bootstrap 5.3 + Bootstrap Icons (via CDN), Hotwire (Turbo/Stimulus) |
 | Testes | Minitest |
 
@@ -77,9 +77,9 @@ Tenha instalado na máquina:
 
 - **Ruby 3.4** (recomendado instalar com [rbenv](https://github.com/rbenv/rbenv), [asdf](https://asdf-vm.com/) ou [mise](https://mise.jdx.dev/))
 - **Bundler** (`gem install bundler`)
-- **SQLite 3** e suas bibliotecas de desenvolvimento
-  - Ubuntu/Debian/WSL: `sudo apt install sqlite3 libsqlite3-dev`
-  - macOS: `brew install sqlite`
+- **PostgreSQL** (servidor em execução) e suas bibliotecas de desenvolvimento
+  - Ubuntu/Debian/WSL: `sudo apt install postgresql libpq-dev`
+  - macOS: `brew install postgresql@18 && brew services start postgresql@18`
 - **Git**
 - Conexão com a internet (o Bootstrap é carregado via CDN)
 
@@ -88,7 +88,7 @@ Confira as versões:
 ```bash
 ruby -v
 bundle -v
-sqlite3 --version
+psql --version
 ```
 
 ### 2. Clonar o repositório
@@ -105,6 +105,14 @@ bundle install
 ```
 
 ### 4. Criar e preparar o banco de dados
+
+Crie o arquivo de configuração local a partir do exemplo e ajuste usuário/senha do seu PostgreSQL:
+
+```bash
+cp .env.example .env
+```
+
+O `.env` não é versionado e é carregado automaticamente em desenvolvimento e teste.
 
 ```bash
 bin/rails db:setup
