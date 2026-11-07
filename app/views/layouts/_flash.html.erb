@@ -1,0 +1,8 @@
+<% { notice: "success", alert: "danger" }.each do |type, css| %>
+  <% if flash[type].present? %>
+    <div class="alert alert-<%= css %> alert-dismissible fade show" role="alert">
+      <%= flash[type] %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+    </div>
+  <% end %>
+<% end %>
