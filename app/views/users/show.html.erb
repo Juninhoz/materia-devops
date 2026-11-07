@@ -1,0 +1,41 @@
+<% content_for :title, @user.nome %>
+
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><%= link_to "Usuários", users_path %></li>
+        <li class="breadcrumb-item active" aria-current="page"><%= @user.nome %></li>
+      </ol>
+    </nav>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-4"><i class="bi bi-person-badge me-2"></i><%= @user.nome %></h1>
+
+        <dl class="row mb-0">
+          <dt class="col-sm-3">E-mail</dt>
+          <dd class="col-sm-9"><%= @user.email %></dd>
+
+          <dt class="col-sm-3">Criado em</dt>
+          <dd class="col-sm-9"><%= l @user.created_at, format: :long %></dd>
+
+          <dt class="col-sm-3">Atualizado em</dt>
+          <dd class="col-sm-9"><%= l @user.updated_at, format: :long %></dd>
+        </dl>
+      </div>
+      <div class="card-footer bg-transparent d-flex gap-2 p-3">
+        <%= link_to edit_user_path(@user), class: "btn btn-primary" do %>
+          <i class="bi bi-pencil"></i> Editar
+        <% end %>
+        <%= link_to "Voltar", users_path, class: "btn btn-outline-secondary" %>
+        <% unless @user == current_user %>
+          <%= button_to @user, method: :delete, class: "btn btn-outline-danger",
+                form_class: "ms-auto", form: { data: { turbo_confirm: "Excluir #{@user.nome}?" } } do %>
+            <i class="bi bi-trash"></i> Excluir
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
