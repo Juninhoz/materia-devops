@@ -106,7 +106,13 @@ bundle install
 
 ### 4. Criar e preparar o banco de dados
 
-Por padrão a conexão usa `localhost:5432` com o usuário do sistema. Para alterar, defina `DATABASE_HOST`, `DATABASE_PORT`, `DATABASE_USERNAME` e `DATABASE_PASSWORD`.
+Crie o arquivo de configuração local a partir do exemplo e ajuste usuário/senha do seu PostgreSQL:
+
+```bash
+cp .env.example .env
+```
+
+O `.env` não é versionado e é carregado automaticamente em desenvolvimento e teste.
 
 ```bash
 bin/rails db:setup
