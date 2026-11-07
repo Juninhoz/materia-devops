@@ -1,0 +1,29 @@
+/* Estilos próprios da aplicação (o Bootstrap é carregado via CDN no layout). */
+
+.auth-wrapper {
+  min-height: 75vh;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  border: 0;
+  border-radius: 1rem;
+}
+
+.auth-icon {
+  width: 64px;
+  height: 64px;
+  font-size: 2rem;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  font-size: .9rem;
+}
+
+.table td,
+.table th {
+  vertical-align: middle;
+}
