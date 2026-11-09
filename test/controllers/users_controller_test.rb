@@ -31,6 +31,37 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_select "td", text: /Maria Teste/
   end
 
+  test "filtra usuários pelo nome sem diferenciar maiúsculas" do
+    sign_in @admin
+    get users_url, params: { q: "maria" }
+    assert_response :success
+    assert_select "a", text: "Maria Teste"
+    assert_select "a", text: "Administrador", count: 0
+  end
+
+  test "filtra usuários pelo e-mail" do
+    sign_in @admin
+    get users_url, params: { q: "admin@example" }
+    assert_response :success
+    assert_select "a", text: "Administrador"
+    assert_select "a", text: "Maria Teste", count: 0
+  end
+
+  test "informa quando a busca não encontra usuários" do
+    sign_in @admin
+    get users_url, params: { q: "inexistente" }
+    assert_response :success
+    assert_select "p", text: /Nenhum usuário encontrado/
+    assert_select "table", count: 0
+  end
+
+  test "trata curingas da busca como texto literal" do
+    sign_in @admin
+    get users_url, params: { q: "%" }
+    assert_response :success
+    assert_select "p", text: /Nenhum usuário encontrado/
+  end
+
   test "cria usuário" do
     sign_in @admin
     assert_difference("User.count", 1) do
