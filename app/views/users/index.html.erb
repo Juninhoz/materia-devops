@@ -7,6 +7,22 @@
   <% end %>
 </div>
 
+<%= form_with url: users_path, method: :get, class: "row g-2 align-items-center mb-3" do |form| %>
+  <div class="col-sm">
+    <%= form.text_field :q, value: @query, class: "form-control",
+          placeholder: "Buscar por nome ou e-mail", aria: { label: "Buscar usuários" } %>
+  </div>
+  <div class="col-sm-auto">
+    <%= form.submit "Buscar", class: "btn btn-outline-primary", name: nil %>
+  </div>
+  <% if @query.present? %>
+    <div class="col-sm-auto">
+      <%= link_to "Limpar", users_path, class: "btn btn-outline-secondary" %>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @users.any? %>
 <div class="card shadow-sm border-0">
   <div class="table-responsive">
     <table class="table table-hover mb-0">
@@ -54,3 +70,15 @@
     </table>
   </div>
 </div>
+<% else %>
+  <div class="card shadow-sm border-0">
+    <div class="card-body text-center text-body-secondary py-5">
+      <i class="bi bi-search display-6 d-block mb-3"></i>
+      <% if @query.present? %>
+        <p class="mb-0">Nenhum usuário encontrado para <strong><%= @query %></strong>.</p>
+      <% else %>
+        <p class="mb-0">Nenhum usuário cadastrado.</p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

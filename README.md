@@ -10,7 +10,7 @@ Aplicação web em **Ruby on Rails** com autenticação via **Devise** e um **CR
 - **Recuperação de senha** ("Esqueceu sua senha?") por e-mail.
 - **Acesso protegido**: todas as páginas exigem login; quem não está autenticado é redirecionado para a tela de login.
 - **CRUD de usuários**:
-  - Listagem em tabela com ações de visualizar, editar e excluir;
+  - Listagem em tabela com ações de visualizar, editar e excluir, e busca por nome ou e-mail;
   - Página de detalhes do usuário;
   - Cadastro e edição com validação (nome e e-mail obrigatórios, e-mail único, senha com no mínimo 6 caracteres e confirmação);
   - Na edição, deixar a senha em branco mantém a senha atual;

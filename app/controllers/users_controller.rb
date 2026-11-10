@@ -2,7 +2,8 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
 
   def index
-    @users = User.order(:nome)
+    @query = params[:q].to_s.strip
+    @users = User.search(@query).order(:nome)
   end
 
   def show
