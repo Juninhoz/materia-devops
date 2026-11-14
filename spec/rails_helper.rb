@@ -67,12 +67,12 @@ RSpec.configure do |config|
 
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
-
-  # Carrega todas as fixtures de spec/fixtures em todos os testes
-  config.global_fixtures = :all
-
-  # Helpers do Devise (sign_in / sign_out) nos controller specs
-  config.include Devise::Test::ControllerHelpers, type: :controller
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+
+  # Load all fixtures from spec/fixtures in every test
+  config.global_fixtures = :all
+
+  # Devise helpers (sign_in / sign_out) for controller specs
+  config.include Devise::Test::ControllerHelpers, type: :controller
 end

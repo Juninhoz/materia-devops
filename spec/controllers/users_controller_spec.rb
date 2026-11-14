@@ -5,31 +5,31 @@ RSpec.describe UsersController, type: :controller do
   let(:maria) { users(:maria) }
 
   let(:valid_attributes) do
-    { nome: "Novo Usuário", email: "novo@example.com", password: "senha123", password_confirmation: "senha123" }
+    { nome: "New User", email: "new@example.com", password: "password123", password_confirmation: "password123" }
   end
   let(:invalid_attributes) do
-    { nome: "", email: "invalido", password: "1", password_confirmation: "2" }
+    { nome: "", email: "invalid", password: "1", password_confirmation: "2" }
   end
 
-  context "sem autenticação" do
-    it "redireciona para o login" do
+  context "when not authenticated" do
+    it "redirects to the login page" do
       get :index
       expect(response).to redirect_to(new_user_session_path)
     end
   end
 
-  context "com usuário autenticado" do
+  context "when authenticated" do
     before { sign_in admin }
 
     describe "GET #index" do
-      it "renderiza a listagem com todos os usuários ordenados por nome" do
+      it "renders the list with all users ordered by name" do
         get :index
         expect(response).to have_http_status(:ok)
         expect(response).to render_template(:index)
         expect(assigns(:users)).to eq([ admin, maria ])
       end
 
-      it "filtra pelo termo de busca e guarda a busca sem espaços" do
+      it "filters by the search term and stores it without surrounding spaces" do
         get :index, params: { q: "  maria  " }
         expect(assigns(:query)).to eq("maria")
         expect(assigns(:users)).to eq([ maria ])
@@ -37,19 +37,19 @@ RSpec.describe UsersController, type: :controller do
     end
 
     describe "GET #show" do
-      it "carrega o usuário solicitado" do
+      it "loads the requested user" do
         get :show, params: { id: maria.id }
         expect(response).to render_template(:show)
         expect(assigns(:user)).to eq(maria)
       end
 
-      it "levanta erro quando o usuário não existe" do
+      it "raises an error when the user does not exist" do
         expect { get :show, params: { id: 0 } }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
     describe "GET #new" do
-      it "inicializa um novo usuário" do
+      it "builds a new user" do
         get :new
         expect(response).to render_template(:new)
         expect(assigns(:user)).to be_a_new(User)
@@ -57,7 +57,7 @@ RSpec.describe UsersController, type: :controller do
     end
 
     describe "GET #edit" do
-      it "carrega o usuário para edição" do
+      it "loads the user for editing" do
         get :edit, params: { id: maria.id }
         expect(response).to render_template(:edit)
         expect(assigns(:user)).to eq(maria)
@@ -65,8 +65,8 @@ RSpec.describe UsersController, type: :controller do
     end
 
     describe "POST #create" do
-      context "com parâmetros válidos" do
-        it "cria o usuário e redireciona para ele" do
+      context "with valid params" do
+        it "creates the user and redirects to it" do
           expect {
             post :create, params: { user: valid_attributes }
           }.to change(User, :count).by(1)
@@ -76,8 +76,8 @@ RSpec.describe UsersController, type: :controller do
         end
       end
 
-      context "com parâmetros inválidos" do
-        it "não cria o usuário e renderiza o formulário novamente" do
+      context "with invalid params" do
+        it "does not create the user and re-renders the form" do
           expect {
             post :create, params: { user: invalid_attributes }
           }.not_to change(User, :count)
@@ -89,36 +89,36 @@ RSpec.describe UsersController, type: :controller do
     end
 
     describe "PATCH #update" do
-      context "com parâmetros válidos" do
-        it "atualiza o usuário e redireciona para ele" do
-          patch :update, params: { id: maria.id, user: { nome: "Maria Editada" } }
+      context "with valid params" do
+        it "updates the user and redirects to it" do
+          patch :update, params: { id: maria.id, user: { nome: "Maria Edited" } }
 
-          expect(maria.reload.nome).to eq("Maria Editada")
+          expect(maria.reload.nome).to eq("Maria Edited")
           expect(response).to redirect_to(maria)
           expect(flash[:notice]).to eq("Usuário atualizado com sucesso.")
         end
 
-        it "mantém a senha atual quando enviada em branco" do
+        it "keeps the current password when it is left blank" do
           patch :update, params: { id: maria.id, user: { nome: "Maria", password: "", password_confirmation: "" } }
-          expect(maria.reload.valid_password?("senha123")).to be(true)
+          expect(maria.reload.valid_password?("password123")).to be(true)
         end
 
-        it "altera a senha quando informada" do
-          patch :update, params: { id: maria.id, user: { password: "novaSenha1", password_confirmation: "novaSenha1" } }
-          expect(maria.reload.valid_password?("novaSenha1")).to be(true)
+        it "changes the password when one is provided" do
+          patch :update, params: { id: maria.id, user: { password: "newPassword1", password_confirmation: "newPassword1" } }
+          expect(maria.reload.valid_password?("newPassword1")).to be(true)
         end
 
-        it "mantém o usuário logado ao alterar a própria senha" do
-          patch :update, params: { id: admin.id, user: { password: "novaSenha1", password_confirmation: "novaSenha1" } }
+        it "keeps the user signed in after changing their own password" do
+          patch :update, params: { id: admin.id, user: { password: "newPassword1", password_confirmation: "newPassword1" } }
           expect(controller.current_user).to eq(admin)
         end
       end
 
-      context "com parâmetros inválidos" do
-        it "não atualiza e renderiza o formulário de edição" do
+      context "with invalid params" do
+        it "does not update the user and re-renders the edit form" do
           patch :update, params: { id: maria.id, user: { nome: "" } }
 
-          expect(maria.reload.nome).to eq("Maria Teste")
+          expect(maria.reload.nome).to eq("Maria Test")
           expect(response).to have_http_status(:unprocessable_content)
           expect(response).to render_template(:edit)
         end
@@ -126,7 +126,7 @@ RSpec.describe UsersController, type: :controller do
     end
 
     describe "DELETE #destroy" do
-      it "exclui outro usuário e redireciona para a listagem" do
+      it "deletes another user and redirects to the list" do
         expect {
           delete :destroy, params: { id: maria.id }
         }.to change(User, :count).by(-1)
@@ -136,7 +136,7 @@ RSpec.describe UsersController, type: :controller do
         expect(flash[:notice]).to eq("Usuário excluído com sucesso.")
       end
 
-      it "não permite excluir o próprio usuário" do
+      it "does not allow users to delete themselves" do
         expect {
           delete :destroy, params: { id: admin.id }
         }.not_to change(User, :count)
