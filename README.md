@@ -160,3 +160,14 @@ bin/rails test
 
 - Em desenvolvimento, os e-mails (como o de recuperação de senha) não são enviados de verdade: eles são salvos como arquivos na pasta `tmp/mails/`, onde é possível abrir o link de redefinição.
 - Para habilitar o cadastro público de usuários, adicione `:registerable` ao `devise` em `app/models/user.rb` e remova `skip: [:registrations]` em `config/routes.rb`.
+
+## Rodando com Docker
+
+```bash
+docker compose up --build     # sobe Postgres + Rails em http://localhost:3000
+docker compose exec web bin/rails console
+docker compose exec web bin/rails test
+docker compose down           # para os containers (use -v para apagar o banco)
+```
+
+O banco é criado/migrado automaticamente (`db:prepare`) ao subir o container `web`.
