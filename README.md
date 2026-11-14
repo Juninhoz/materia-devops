@@ -143,7 +143,7 @@ Faça login com o usuário inicial:
 ### 7. Executar os testes
 
 ```bash
-bin/rails test
+bundle exec rspec
 ```
 
 ## Comandos úteis
@@ -166,7 +166,7 @@ bin/rails test
 ```bash
 docker compose up --build     # sobe Postgres + Rails em http://localhost:3000
 docker compose exec web bin/rails console
-docker compose exec web bin/rails test
+docker compose exec web bundle exec rspec
 docker compose down           # para os containers (use -v para apagar o banco)
 ```
 
