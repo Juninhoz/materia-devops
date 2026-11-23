@@ -22,6 +22,13 @@
     <div class="invalid-feedback"><%= user.errors[:email].to_sentence %></div>
   </div>
 
+  <div class="mb-3">
+    <%= form.label :document_number, "CPF", class: "form-label" %>
+    <%= form.text_field :document_number, class: "form-control #{'is-invalid' if user.errors[:document_number].any?}",
+          required: true, inputmode: "numeric", maxlength: 14, placeholder: "000.000.000-00" %>
+    <div class="invalid-feedback"><%= user.errors[:document_number].to_sentence %></div>
+  </div>
+
   <div class="row g-3 mb-4">
     <div class="col-md-6">
       <%= form.label :password, "Senha", class: "form-label" %>

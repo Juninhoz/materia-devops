@@ -5,10 +5,11 @@ RSpec.describe UsersController, type: :controller do
   let(:maria) { users(:maria) }
 
   let(:valid_attributes) do
-    { nome: "New User", email: "new@example.com", password: "password123", password_confirmation: "password123" }
+    { nome: "New User", email: "new@example.com", document_number: "111.444.777-35",
+      password: "password123", password_confirmation: "password123" }
   end
   let(:invalid_attributes) do
-    { nome: "", email: "invalid", password: "1", password_confirmation: "2" }
+    { nome: "", email: "invalid", document_number: "123", password: "1", password_confirmation: "2" }
   end
 
   context "when not authenticated" do
@@ -74,6 +75,32 @@ RSpec.describe UsersController, type: :controller do
           expect(response).to redirect_to(User.last)
           expect(flash[:notice]).to eq("Usuário criado com sucesso.")
         end
+
+        it "saves the document number with digits only" do
+          post :create, params: { user: valid_attributes }
+          expect(User.last.document_number).to eq("11144477735")
+        end
+      end
+
+      context "with an invalid document number" do
+        it "does not create the user and re-renders the form" do
+          expect {
+            post :create, params: { user: valid_attributes.merge(document_number: "111.444.777-00") }
+          }.not_to change(User, :count)
+
+          expect(response).to have_http_status(:unprocessable_content)
+          expect(assigns(:user).errors[:document_number]).to be_present
+        end
+      end
+
+      context "with a document number already in use" do
+        it "does not create the user" do
+          expect {
+            post :create, params: { user: valid_attributes.merge(document_number: maria.formatted_document_number) }
+          }.not_to change(User, :count)
+
+          expect(response).to have_http_status(:unprocessable_content)
+        end
       end
 
       context "with invalid params" do
@@ -96,6 +123,11 @@ RSpec.describe UsersController, type: :controller do
           expect(maria.reload.nome).to eq("Maria Edited")
           expect(response).to redirect_to(maria)
           expect(flash[:notice]).to eq("Usuário atualizado com sucesso.")
+        end
+
+        it "updates the document number" do
+          patch :update, params: { id: maria.id, user: { document_number: "935.411.347-80" } }
+          expect(maria.reload.document_number).to eq("93541134780")
         end
 
         it "keeps the current password when it is left blank" do
@@ -121,6 +153,13 @@ RSpec.describe UsersController, type: :controller do
           expect(maria.reload.nome).to eq("Maria Test")
           expect(response).to have_http_status(:unprocessable_content)
           expect(response).to render_template(:edit)
+        end
+
+        it "does not update with an invalid document number" do
+          patch :update, params: { id: maria.id, user: { document_number: "000.000.000-00" } }
+
+          expect(maria.reload.document_number).to eq("12345678909")
+          expect(response).to have_http_status(:unprocessable_content)
         end
       end
     end

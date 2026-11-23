@@ -11,6 +11,7 @@
 # Usuário inicial para acessar o sistema (altere a senha após o primeiro login)
 User.find_or_create_by!(email: "admin@example.com") do |user|
   user.nome = "Administrador"
+  user.document_number = "529.982.247-25"
   user.password = "senha123"
   user.password_confirmation = "senha123"
 end
