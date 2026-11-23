@@ -66,6 +66,11 @@ group :test do
 
   # Habilita assigns e render_template nos controller specs
   gem "rails-controller-testing"
+
+  # Testes de feature (BDD) com Gherkin [https://github.com/cucumber/cucumber-rails]
+  gem "cucumber-rails", require: false
+  # Limpa o banco entre os cenários do Cucumber
+  gem "database_cleaner-active_record"
 end
 
 gem "devise", "~> 5.0"
