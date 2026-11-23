@@ -8,6 +8,7 @@ pt-BR:
       user:
         nome: Nome
         email: E-mail
+        document_number: CPF
         password: Senha
         password_confirmation: Confirmação de senha
         remember_me: Lembrar de mim

@@ -58,6 +58,6 @@ class UsersController < ApplicationController
   end
 
   def user_params
-    params.expect(user: %i[nome email password password_confirmation])
+    params.expect(user: %i[nome email document_number password password_confirmation])
   end
 end

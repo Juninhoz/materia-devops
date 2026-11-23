@@ -1,9 +1,11 @@
 admin:
   nome: Administrator
   email: admin@example.com
+  document_number: "52998224725"
   encrypted_password: <%= Devise::Encryptor.digest(User, "password123") %>
 
 maria:
   nome: Maria Test
   email: maria@example.com
+  document_number: "12345678909"
   encrypted_password: <%= Devise::Encryptor.digest(User, "password123") %>
